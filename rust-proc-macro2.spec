@@ -6,7 +6,7 @@
 
 Name:           rust-%{crate}
 Version:        1.0.24
-Release:        1
+Release:        2
 Summary:        Stable implementation of the upcoming new `proc_macro` API
 
 # Upstream license specification: MIT OR Apache-2.0
