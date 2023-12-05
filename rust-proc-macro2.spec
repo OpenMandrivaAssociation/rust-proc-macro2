@@ -1,101 +1,126 @@
-# * RUSTC_BOOTSTRAP breaks tests
+# Rust packages always list license files and docs
+# inside the crate as well as the containing directory
+%undefine _duplicate_files_terminate_build
+# FIXME as of 1.0.70, some tests fail
 %bcond_with check
 %global debug_package %{nil}
 
 %global crate proc-macro2
 
-Name:           rust-%{crate}
-Version:        1.0.24
-Release:        2
-Summary:        Stable implementation of the upcoming new `proc_macro` API
+Name:           rust-proc-macro2
+Version:        1.0.70
+Release:        1
+Summary:        Substitute implementation of the compiler's proc_macro API to decouple token-based libraries from the procedural macro use case
+Group:          Development/Rust
 
-# Upstream license specification: MIT OR Apache-2.0
-License:        MIT or ASL 2.0
+License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/proc-macro2
 Source:         %{crates_source}
 
 ExclusiveArch:  %{rust_arches}
-%if %{__cargo_skip_build}
-BuildArch:      noarch
+
+BuildRequires:  cargo-rpm-macros >= 24
+BuildRequires:  (crate(unicode-ident/default) >= 1.0.0 with crate(unicode-ident/default) < 2.0.0~)
+BuildRequires:  rust >= 1.56
+%if %{with check}
+BuildRequires:  (crate(quote) >= 1.0.0 with crate(quote) < 2.0.0~)
+BuildRequires:  (crate(rustversion/default) >= 1.0.0 with crate(rustversion/default) < 2.0.0~)
 %endif
 
-BuildRequires:  rust-packaging
-
 %global _description %{expand:
-Stable implementation of the upcoming new `proc_macro` API. Comes with an
-option, off by default, to also reimplement itself in terms of the upstream
-unstable API.}
+A substitute implementation of the compiler's `proc_macro` API to
+decouple token-based libraries from the procedural macro use case.}
 
 %description %{_description}
 
 %package        devel
 Summary:        %{summary}
+Group:          Development/Rust
 BuildArch:      noarch
+Provides:       crate(proc-macro2) = 1.0.70
+Requires:       (crate(unicode-ident/default) >= 1.0.0 with crate(unicode-ident/default) < 2.0.0~)
+Requires:       cargo
+Requires:       rust >= 1.56
 
 %description    devel %{_description}
 
-This package contains library source intended for building other packages
-which use "%{crate}" crate.
+This package contains library source intended for building other packages which
+use the "%{crate}" crate.
 
 %files          devel
-%license LICENSE-MIT LICENSE-APACHE
-%doc README.md
-%{cargo_registry}/%{crate}-%{version_no_tilde}/
+%license %{crate_instdir}/LICENSE-APACHE
+%license %{crate_instdir}/LICENSE-MIT
+%doc %{crate_instdir}/README.md
+%{crate_instdir}/
 
 %package     -n %{name}+default-devel
 Summary:        %{summary}
+Group:          Development/Rust
 BuildArch:      noarch
+Provides:       crate(proc-macro2/default) = 1.0.70
+Requires:       cargo
+Requires:       crate(proc-macro2) = 1.0.70
+Requires:       crate(proc-macro2/proc-macro) = 1.0.70
 
 %description -n %{name}+default-devel %{_description}
 
-This package contains library source intended for building other packages
-which use "default" feature of "%{crate}" crate.
+This package contains library source intended for building other packages which
+use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
-%ghost %{cargo_registry}/%{crate}-%{version_no_tilde}/Cargo.toml
+%ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+nightly-devel
 Summary:        %{summary}
+Group:          Development/Rust
 BuildArch:      noarch
+Provides:       crate(proc-macro2/nightly) = 1.0.70
+Requires:       cargo
+Requires:       crate(proc-macro2) = 1.0.70
 
 %description -n %{name}+nightly-devel %{_description}
 
-This package contains library source intended for building other packages
-which use "nightly" feature of "%{crate}" crate.
+This package contains library source intended for building other packages which
+use the "nightly" feature of the "%{crate}" crate.
 
 %files       -n %{name}+nightly-devel
-%ghost %{cargo_registry}/%{crate}-%{version_no_tilde}/Cargo.toml
+%ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+proc-macro-devel
 Summary:        %{summary}
+Group:          Development/Rust
 BuildArch:      noarch
+Provides:       crate(proc-macro2/proc-macro) = 1.0.70
+Requires:       cargo
+Requires:       crate(proc-macro2) = 1.0.70
 
 %description -n %{name}+proc-macro-devel %{_description}
 
-This package contains library source intended for building other packages
-which use "proc-macro" feature of "%{crate}" crate.
+This package contains library source intended for building other packages which
+use the "proc-macro" feature of the "%{crate}" crate.
 
 %files       -n %{name}+proc-macro-devel
-%ghost %{cargo_registry}/%{crate}-%{version_no_tilde}/Cargo.toml
+%ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+span-locations-devel
 Summary:        %{summary}
+Group:          Development/Rust
 BuildArch:      noarch
+Provides:       crate(proc-macro2/span-locations) = 1.0.70
+Requires:       cargo
+Requires:       crate(proc-macro2) = 1.0.70
 
 %description -n %{name}+span-locations-devel %{_description}
 
-This package contains library source intended for building other packages
-which use "span-locations" feature of "%{crate}" crate.
+This package contains library source intended for building other packages which
+use the "span-locations" feature of the "%{crate}" crate.
 
 %files       -n %{name}+span-locations-devel
-%ghost %{cargo_registry}/%{crate}-%{version_no_tilde}/Cargo.toml
+%ghost %{crate_instdir}/Cargo.toml
 
 %prep
-%autosetup -n %{crate}-%{version_no_tilde} -p1
+%autosetup -n %{crate}-%{version} -p1
 %cargo_prep
-
-%generate_buildrequires
-%cargo_generate_buildrequires
 
 %build
 %cargo_build
