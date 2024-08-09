@@ -8,7 +8,7 @@
 %global crate proc-macro2
 
 Name:           rust-proc-macro2
-Version:        1.0.70
+Version:        1.0.86
 Release:        1
 Summary:        Substitute implementation of the compiler's proc_macro API to decouple token-based libraries from the procedural macro use case
 Group:          Development/Rust
