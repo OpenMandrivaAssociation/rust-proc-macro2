@@ -8,7 +8,7 @@
 %global crate proc-macro2
 
 Name:           rust-proc-macro2
-Version:        1.0.86
+Version:        1.0.95
 Release:        1
 Summary:        Substitute implementation of the compiler's proc_macro API to decouple token-based libraries from the procedural macro use case
 Group:          Development/Rust
@@ -23,8 +23,11 @@ BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  (crate(unicode-ident/default) >= 1.0.0 with crate(unicode-ident/default) < 2.0.0~)
 BuildRequires:  rust >= 1.56
 %if %{with check}
+BuildRequires:  (crate(flate2/default) >= 1.0.0 with crate(flate2/default) < 2.0.0~)
 BuildRequires:  (crate(quote) >= 1.0.0 with crate(quote) < 2.0.0~)
+BuildRequires:  (crate(rayon/default) >= 1.0.0 with crate(rayon/default) < 2.0.0~)
 BuildRequires:  (crate(rustversion/default) >= 1.0.0 with crate(rustversion/default) < 2.0.0~)
+BuildRequires:  (crate(tar/default) >= 0.4.0 with crate(tar/default) < 0.5.0~)
 %endif
 
 %global _description %{expand:
@@ -37,7 +40,7 @@ decouple token-based libraries from the procedural macro use case.}
 Summary:        %{summary}
 Group:          Development/Rust
 BuildArch:      noarch
-Provides:       crate(proc-macro2) = 1.0.70
+Provides:       crate(proc-macro2) = 1.0.95
 Requires:       (crate(unicode-ident/default) >= 1.0.0 with crate(unicode-ident/default) < 2.0.0~)
 Requires:       cargo
 Requires:       rust >= 1.56
@@ -57,10 +60,10 @@ use the "%{crate}" crate.
 Summary:        %{summary}
 Group:          Development/Rust
 BuildArch:      noarch
-Provides:       crate(proc-macro2/default) = 1.0.70
+Provides:       crate(proc-macro2/default) = 1.0.95
 Requires:       cargo
-Requires:       crate(proc-macro2) = 1.0.70
-Requires:       crate(proc-macro2/proc-macro) = 1.0.70
+Requires:       crate(proc-macro2) = 1.0.95
+Requires:       crate(proc-macro2/proc-macro) = 1.0.95
 
 %description -n %{name}+default-devel %{_description}
 
@@ -74,9 +77,9 @@ use the "default" feature of the "%{crate}" crate.
 Summary:        %{summary}
 Group:          Development/Rust
 BuildArch:      noarch
-Provides:       crate(proc-macro2/nightly) = 1.0.70
+Provides:       crate(proc-macro2/nightly) = 1.0.95
 Requires:       cargo
-Requires:       crate(proc-macro2) = 1.0.70
+Requires:       crate(proc-macro2) = 1.0.95
 
 %description -n %{name}+nightly-devel %{_description}
 
@@ -90,9 +93,9 @@ use the "nightly" feature of the "%{crate}" crate.
 Summary:        %{summary}
 Group:          Development/Rust
 BuildArch:      noarch
-Provides:       crate(proc-macro2/proc-macro) = 1.0.70
+Provides:       crate(proc-macro2/proc-macro) = 1.0.95
 Requires:       cargo
-Requires:       crate(proc-macro2) = 1.0.70
+Requires:       crate(proc-macro2) = 1.0.95
 
 %description -n %{name}+proc-macro-devel %{_description}
 
@@ -106,9 +109,9 @@ use the "proc-macro" feature of the "%{crate}" crate.
 Summary:        %{summary}
 Group:          Development/Rust
 BuildArch:      noarch
-Provides:       crate(proc-macro2/span-locations) = 1.0.70
+Provides:       crate(proc-macro2/span-locations) = 1.0.95
 Requires:       cargo
-Requires:       crate(proc-macro2) = 1.0.70
+Requires:       crate(proc-macro2) = 1.0.95
 
 %description -n %{name}+span-locations-devel %{_description}
 
